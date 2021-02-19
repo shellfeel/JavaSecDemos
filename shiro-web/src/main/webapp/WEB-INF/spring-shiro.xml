@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 装配 securityManager -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 配置登陆页面 -->
+        <property name="loginUrl" value="/index.jsp"/>
+        <!-- 登陆成功后的一面 -->
+        <property name="successUrl" value="/jsp/success.jsp"/>
+<!--        未认证链 -->
+        <property name="unauthorizedUrl" value="/jsp/unauthorized.jsp"/>
+        <!-- 具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截.  -->
+        <property name="filterChainDefinitions">
+            <!--                /index.jsp=anon-->
+            <!--                /jsp/success.jsp=anon-->
+            <!--                /jsp/fail.jsp=anon-->
+            <!--                /jsp/user.jsp = roles[user]-->
+            <!--                /jsp/admin.jsp = roles[admin]-->
+            <!--                /logout = logout-->
+            <value>
+                /index=anon
+                /test=anon
+                /login/**=anon
+                /login*=anon
+<!--                cve-2020-1957-->
+                /sec/*=user
+                /**=user
+            </value>
+        </property>
+    </bean>
+<!--    ！一定要用webSecurity-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" >
+        <property name="realm" ref="customRealm" />
+    </bean>
+    <bean id="customRealm" class="shiro.CustomRealm"/>
+
+    <!-- 配置 Bean 后置处理器: 会自动的调用和 Spring 整合后各个组件的生命周期方法. -->
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>
