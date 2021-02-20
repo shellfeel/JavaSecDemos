@@ -35,6 +35,7 @@
         <property name="realm" ref="customRealm" />
     </bean>
     <bean id="customRealm" class="shiro.CustomRealm"/>
+<!--    <bean id="remembermeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager"-->
 
     <!-- 配置 Bean 后置处理器: 会自动的调用和 Spring 整合后各个组件的生命周期方法. -->
 

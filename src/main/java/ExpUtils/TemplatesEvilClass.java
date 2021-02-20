@@ -12,10 +12,12 @@ import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 * */
 public class TemplatesEvilClass extends AbstractTranslet {
     static {
+//        攻击代码
         System.out.println("static : pwn!");
     }
 
     public TemplatesEvilClass(){
+//        攻击代码
         System.out.println("pwn!");
     }
     public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {

@@ -5,6 +5,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.subject.support.WebDelegatingSubject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,10 +25,11 @@ public class LoginController {
     @ResponseBody
     public String doLogin(LoginPassword loginPassword, HttpServletResponse httpServletResponse){
         boolean flag = false;
+        AccessControlFilter
         subject = SecurityUtils.getSubject();
 
         if (subject.isAuthenticated()){
-            System.out.println("已经登录过，直接调整");
+            System.out.println("已经登录过，直接跳转");
             flag = true;
 
         }else {
