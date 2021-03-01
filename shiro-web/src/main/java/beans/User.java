@@ -1,6 +1,19 @@
 package beans;
 
-public class User {
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
+
+public class User implements Serializable {
+    static {
+        System.out.println("我被序列化了： static");
+    }
+
+    public User(){
+        System.out.println("我被执行了： construct");
+    }
     public String getName() {
         return name;
     }
@@ -23,5 +36,9 @@ public class User {
     @Override
     public String toString() {
         return "name: " + name + "; age: " + age;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        System.out.println("我被反序列化了： readObject");
     }
 }

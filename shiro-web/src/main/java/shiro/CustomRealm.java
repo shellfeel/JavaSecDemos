@@ -34,7 +34,7 @@ public class CustomRealm extends AuthorizingRealm {
         String username = (String) token.getPrincipal();
         String password =  getPasswordByUsername(username);
         if (password != null){
-            return new SimpleAuthenticationInfo(username,password,"dasdasdasffrawda");
+            return new SimpleAuthenticationInfo(username,password,"XxfRealmName");
         }else {
             return null;
         }

@@ -25,7 +25,7 @@ public class LoginController {
     @ResponseBody
     public String doLogin(LoginPassword loginPassword, HttpServletResponse httpServletResponse){
         boolean flag = false;
-        AccessControlFilter
+//        AccessControlFilter
         subject = SecurityUtils.getSubject();
 
         if (subject.isAuthenticated()){

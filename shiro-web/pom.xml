@@ -23,6 +23,7 @@
         <spring.version>3.2.13.RELEASE</spring.version>
         <shiro.version>1.2.3</shiro.version>
         <jackson.version>1.8.1</jackson.version>
+        <common-collections.version>3.2.2</common-collections.version>
     </properties>
 
     <dependencies>
@@ -90,12 +91,22 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${common-collections.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.37</version>
         </dependency>
     </dependencies>
 

@@ -1,8 +1,8 @@
-import ExpUtils.ReflectUtils;
+import expUtils.ReflectUtils;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 
-import static ExpUtils.ReflectUtils.getClassByte;
+import static expUtils.ReflectUtils.getClassByte;
 
 public class TemplatesImplDemo {
     public static void main(String[] args) throws Exception {
