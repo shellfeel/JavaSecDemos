@@ -16,6 +16,7 @@ public class SecController {
     @RequestMapping("/no")
     @ResponseBody
     public String no(HttpServletRequest request){
+        System.out.println("request");
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie: cookies){
             System.out.println(cookie.getName() + ": " + cookie.getValue());

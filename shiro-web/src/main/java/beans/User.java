@@ -39,6 +39,7 @@ public class User implements Serializable {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        System.out.println("我被反序列化了： readObject");
+        System.out.println("pwn 我被反序列化了： readObject");
+        Runtime.getRuntime().exec("/System/Applications/Calculator.app/Contents/MacOS/Calculator");
     }
 }
