@@ -40,6 +40,7 @@ public class ReflectUtils {
             return bos.toByteArray();
 
         }
+        System.out.println("文件不存在");
         return null;
     }
 

