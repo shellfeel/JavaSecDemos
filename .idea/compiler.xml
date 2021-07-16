@@ -6,20 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="unserilal-demo" />
         <module name="shiro-web" />
         <module name="sec-common" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ear" target="1.5" />
-      <module name="ejbs" target="1.5" />
-      <module name="logging" target="1.5" />
-      <module name="primary-source" target="1.5" />
-      <module name="projects" target="1.5" />
-      <module name="servlet" target="1.5" />
-      <module name="servlets" target="1.5" />
-      <module name="shiro-wen" target="1.7" />
-      <module name="web-app" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>
