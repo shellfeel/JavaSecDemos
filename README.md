@@ -1,4 +1,3 @@
-# shiro-web-test
-shiro 漏洞DEMO
+# JavaSecDemos
 
-**感觉再写下去自己都写了个ysoserial了**
+主流java框架漏洞调试代码
