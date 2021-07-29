@@ -47,11 +47,12 @@ public class People implements Serializable {
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-//        ois.defaultReadObject();
-        System.out.println("readObjecting");
-        ObjectInputStream.GetField var1 = ois.readFields();
-        Map lazymap = (Map) var1.get("memberValues",(Object)null);
-        this.memberValues.entrySet();
-        lazymap.entrySet();
+        ois.defaultReadObject();
+
+        // Read in (and discard) array length
+        ois.readInt();
+        ois.readObject();
+//     1   lazymap.get("1");
+
     }
 }

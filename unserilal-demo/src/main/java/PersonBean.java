@@ -1,6 +1,15 @@
 public class PersonBean {
 
+    public int testVal = 0;
+
+    static {
+
+        System.out.println("test");
+    }
+
+
     public PersonBean(){
+
         System.out.println("我被初始化了");
     }
 

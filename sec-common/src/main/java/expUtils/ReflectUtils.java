@@ -20,7 +20,9 @@ public class ReflectUtils {
 //    返回查询字段的数值
     public static Field getFields(Object obj, String name) throws NoSuchFieldException {
         Class cls = obj.getClass();
-        return cls.getDeclaredField(name);
+        Field field =  cls.getDeclaredField(name);
+        field.setAccessible(true);
+        return field;
     }
 
 //返回指定路径二进制文件byte字节数组

@@ -19,8 +19,9 @@ public class SerialDemo {
 
         System.out.println(System.getProperty("java.version"));
 
-        InvocationHandler invocationHandler =  new TestInvoker(goodMap,null);
-        Map proxyMap = (Map) Proxy.newProxyInstance(SerialDemo.class.getClassLoader(),goodMap.getClass().getInterfaces(),invocationHandler);
+//        InvocationHandler invocationHandler =  new TestInvoker(goodMap,null);
+//        Map proxyMap = (Map) Proxy.newProxyInstance(SerialDemo.class.getClassLoader(),goodMap.getClass().getInterfaces(),invocationHandler);
+
         People people = new People();
         people.setAge(18);
         people.setName("xxf");
