@@ -198,8 +198,8 @@ public class ExpUtils {
         System.out.println(lazyMap1.hashCode());
         System.out.println(lazyMap2.hashCode());
         Hashtable hashtable = new Hashtable();
-        hashtable.put(lazyMap1,1);
-        hashtable.put(lazyMap2,2);
+        hashtable.put(lazyMap1,3);
+        hashtable.put(lazyMap2,4);
 
         System.out.println(lazyMap1.size());
         System.out.println(lazyMap2.size());
