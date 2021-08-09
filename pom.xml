@@ -42,7 +42,7 @@
         <shiro.version>1.2.3</shiro.version>
         <beanutils.version>1.8.3</beanutils.version>
         <sprig.version>3.2.13.RELEASE</sprig.version>
-        <fastjson.version>1.2.67</fastjson.version>
+        <fastjson.version>1.2.45</fastjson.version>
     </properties>
 
 

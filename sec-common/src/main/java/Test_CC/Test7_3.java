@@ -1,3 +1,5 @@
+package Test_CC;
+
 import java.util.HashMap;
 
 public class Test7_3 {

@@ -1,6 +1,8 @@
+package Test_CC;
+
+import Test_CC.Test2;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
-import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import expUtils.ExpUtils;
 import expUtils.ReflectUtils;
 import org.apache.commons.collections.Transformer;
@@ -8,7 +10,6 @@ import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.collections.functors.InstantiateTransformer;
 import org.apache.commons.collections.map.LazyMap;
-import org.apache.commons.collections.map.TransformedMap;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;

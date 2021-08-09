@@ -52,7 +52,7 @@ public class Test {
 
 //        ParserConfig parserConfig = ParserConfig.getGlobalInstance();
 //        parserConfig.setAutoTypeSupport(true);
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+//        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
 //
         JSON.parse(exp);
 
