@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="unserilal-demo" />
+        <module name="struts2-demo" />
         <module name="shiro-web" />
+        <module name="unserilal-demo" />
         <module name="sec-common" />
       </profile>
     </annotationProcessing>

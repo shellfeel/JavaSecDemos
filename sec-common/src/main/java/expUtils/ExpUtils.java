@@ -28,6 +28,7 @@ public class ExpUtils {
     public static String cmd;
 
     static {
+//        默认弹个计算器
         cmd = "/System/Applications/Calculator.app/Contents/MacOS/Calculator";
         String osName = System.getProperty("os.name").toLowerCase();
         String[] str =  osName.split(" ");
