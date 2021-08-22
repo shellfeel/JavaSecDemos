@@ -8,6 +8,6 @@
     <title>Hello World</title>
 </head>
 <body>
- Hello World,<s:property value="name" />
+ Hello World,<s:property value="userName" />
 </body>
 </html>

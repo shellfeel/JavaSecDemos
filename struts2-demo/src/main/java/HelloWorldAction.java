@@ -2,14 +2,16 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class HelloWorldAction extends ActionSupport {
 
-    private String name;
 
-    public String getName() {
-        return name;
+
+    private String userName;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

@@ -44,7 +44,7 @@
         <beanutils.version>1.8.3</beanutils.version>
         <sprig.version>3.2.13.RELEASE</sprig.version>
         <fastjson.version>1.2.45</fastjson.version>
-        <struts2.version>2.5.8</struts2.version>
+        <struts2.version>2.0.5</struts2.version>
     </properties>
 
 

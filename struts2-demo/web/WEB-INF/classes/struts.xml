@@ -3,17 +3,28 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
+    <constant name="struts.tag.altSyntax" value="true" />
     <constant name="struts.devMode" value="true" />
     <package name="helloworld" extends="struts-default">
 
         <action name="hello"
                 class="HelloWorldAction"
                 method="execute">
-            <result name="success">/HelloWorld.jsp</result>
+            <interceptor-ref name="params" />
+            <interceptor-ref name="timer" />
+            <result name="success" >/HelloWorld.jsp</result>
             <result name="error">/error.jsp</result>
         </action>
-        <action name="index">
-            <result>/index.jsp</result>
+        <action name="upload" class="MyUpload">
+            <interceptor-ref name="fileUploadStack">
+                <param name="allowedTypes">image/jpeg,image/gif</param>
+            </interceptor-ref>
+            <result name="success">/success.jsp</result>
+            <result name="error">/error.jsp</result>
         </action>
+        <action name="index" class="HelloWorldAction" method="execute">
+            <result name="success">/error.jsp</result>
+        </action>
+
     </package>
 </struts>
