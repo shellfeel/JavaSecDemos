@@ -9,18 +9,12 @@
   </head>
   <body>
   <h1>Hello World From Struts2</h1>
-  <form action="hello.action" method="get">
-    <label for="name">Please enter your name</label><br/>
-    <input type="text" name="userName" id="name"/>
-    <input type="submit" value="Say Hello"/>
-  </form>
+  <s:form action="hello" method="get">
+    <s:textfield name="username" label="username" />
+    <s:submit></s:submit>
+  </s:form>
 
   <hr>
-  <form action="upload" method="post" enctype="multipart/form-data">
-    <label for="myFile">Upload your file</label>
-    <input type="file" name="myFile" id="myFile" />
-    <input type="submit" value="Upload"/>
 
-  </form>
   </body>
 </html>

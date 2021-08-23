@@ -13,7 +13,7 @@
             <interceptor-ref name="params" />
             <interceptor-ref name="timer" />
             <result name="success" >/HelloWorld.jsp</result>
-            <result name="error">/error.jsp</result>
+            <result name="error">/index.jsp</result>
         </action>
         <action name="upload" class="MyUpload">
             <interceptor-ref name="fileUploadStack">

@@ -43,6 +43,7 @@
             <artifactId>struts2-core</artifactId>
             <version>${struts2.version}</version>
         </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
