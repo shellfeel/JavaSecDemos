@@ -82,7 +82,7 @@ public class ExpUtils {
 
 //    序列化对象到特定路径
     public static String serialize(Object obj) throws IOException {
-        String path = obj.getClass().getName() + ".ser";
+        String path = "my_" + obj.getClass().getName() + ".ser";
         FileOutputStream fileOutputStream = new FileOutputStream(path);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(obj);
