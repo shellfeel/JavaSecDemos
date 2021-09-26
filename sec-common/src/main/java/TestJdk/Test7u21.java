@@ -29,6 +29,9 @@ public class Test7u21 {
         Templates templatesPeoxy = (Templates) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),new Class[]{Templates.class},tempHandler);
 
         LinkedHashSet set = new LinkedHashSet();
+        System.out.println("templates hashcode:" + templates.hashCode());
+        System.out.println(0^templates.hashCode());
+        System.out.println("templatesPeoxy hashcode:" + templatesPeoxy.hashCode());
         set.add(templates);
         set.add(templatesPeoxy);
 
