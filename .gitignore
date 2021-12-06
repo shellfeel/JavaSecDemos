@@ -1,4 +1,8 @@
 *.class
-target/*
+target/
 shiro-web/target/*
 *.ser
+out/
+*.bin
+.idea/
+.DS_Store
